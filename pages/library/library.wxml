@@ -1,0 +1,16 @@
+<view class="page p12">
+  <view class="h1">我的图鉴</view>
+  <view class="sub mt6">已拥有 {{owned.length}} / {{list.length}}</view>
+
+  <view class="grid">
+    <block wx:for="{{list}}" wx:key="id">
+      <view class="card" bindtap="toDetail" data-id="{{item.id}}">
+        <image src="{{item.img}}" mode="aspectFit" class="thumb {{ownedMap[item.id] ? '' : 'dim'}}"/>
+        <view class="row mt6">
+          <text class="name">{{item.name}}</text>
+          <text class="tag {{'tag-'+item.wuxing}}">{{item.wuxing}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

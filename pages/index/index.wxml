@@ -1,0 +1,27 @@
+<view class="page p16">
+  <!-- 今日·五行（先静态占位，后续再接API） -->
+  <view class="card">
+    <view class="h1">今日 · 五行</view>
+    <view class="sub mt6">今日主：{{mainLabel}}（{{mainColor}}） · {{reason}}</view>
+  </view>
+
+  <view class="sp12"></view>
+
+  <view class="h1">推荐佩戴</view>
+  <view class="sp8"></view>
+
+  <block wx:for="{{recs}}" wx:key="id">
+    <view class="card" bindtap="toDetail" data-id="{{item.id}}">
+      <image src="{{item.img}}" mode="aspectFit" class="hero"/>
+      <view class="row mt8">
+        <text class="name">{{item.name}}</text>
+        <text class="tag {{'tag-'+item.wuxing}}">{{item.wuxing}}</text>
+      </view>
+      <view class="sub mt4">{{item.attrs.join('、')}}</view>
+    </view>
+    <view class="sp10"></view>
+  </block>
+
+  <button class="btn" bindtap="toLibrary">进入图鉴</button>
+</view>
+<image src="../../assets/water.jpg" mode="aspectFit" style="width:100%;height:200rpx;border-radius:12rpx"/>
