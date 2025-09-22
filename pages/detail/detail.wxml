@@ -1,11 +1,6 @@
-<view class="page p16">
-  <image src="{{p.img}}" mode="aspectFit" class="hero"/>
-  <view class="h1 mt8">{{p.name}}</view>
-  <view class="row mt8">
-    <text class="tag {{'tag-'+p.wuxing}}">{{p.wuxing}}</text>
-    <text class="sub" wx:if="{{owned}}">已解锁 · 图鉴已点亮</text>
-  </view>
-
-  <view class="sp16"></view>
-  <button class="btn" bindtap="unlock" wx:if="{{!owned}}">解锁（虚拟藏品）</button>
+<view class="container">
+  <image src="../../assets/sample.jpg" mode="aspectFit" class="hero"/>
+  <text class="title">手串名称（示例）</text>
+  <button>解锁</button>
+  <button>前往购买</button>
 </view>
