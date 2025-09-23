@@ -1,5 +1,35 @@
-<view class="container">
-  <text class="title">📅 日历主页</text>
-  <button bindtap="goLibrary">查看图鉴</button>
-  <button bindtap="goMall">进入商城</button>
+<view class="page index">
+  <!-- 顶部主视觉轮播 -->
+  <swiper class="hero-swiper" autoplay interval="5000" duration="400" circular>
+    <swiper-item>
+      <image class="hero-bg" src="../../assets/hero-calendar/hero-calender-1.jpg" mode="aspectFill"/>
+    </swiper-item>
+    <swiper-item>
+      <image class="hero-bg" src="../../assets/hero-calendar/hero-calender-2.jpg" mode="aspectFill"/>
+    </swiper-item>
+    <swiper-item>
+      <image class="hero-bg" src="../../assets/hero-calendar/hero-calender-3.jpg" mode="aspectFill"/>
+    </swiper-item>
+  </swiper>
+
+  <!-- 今日推荐 -->
+  <view class="section">
+    <view class="h1">今日推荐</view>
+
+    <view class="card" bindtap="toDetail" data-id="p-water">
+      <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
+      <image class="prod" src="../../assets/p/p-water.jpg" mode="aspectFit"/>
+      <view class="name">玄渊 · 静志</view>
+      <view class="tag water">水</view>
+    </view>
+
+    <view class="card" bindtap="toDetail" data-id="p-earth">
+      <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
+      <image class="prod" src="../../assets/p/p-earth.jpg" mode="aspectFit"/>
+      <view class="name">黄璨 · 镇财</view>
+      <view class="tag earth">土</view>
+    </view>
+
+    <button class="btn" bindtap="toLibrary">进入图鉴</button>
+  </view>
 </view>

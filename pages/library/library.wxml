@@ -1,4 +1,10 @@
-<view class="container">
-  <text class="title">📚 手串图鉴</text>
-  <button bindtap="goDetail">查看手串详情</button>
+<view class="page lib">
+  <view class="grid">
+    <block wx:for="{{list}}" wx:key="id">
+      <view class="card" bindtap="toDetail" data-id="{{item.id}}">
+        <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
+        <image class="prod {{ownedMap[item.id]?'':'dim'}}" src="{{item.img}}" mode="aspectFit"/>
+      </view>
+    </block>
+  </view>
 </view>

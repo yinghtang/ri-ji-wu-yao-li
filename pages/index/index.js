@@ -1,8 +1,4 @@
 Page({
-  goLibrary() {
-    wx.switchTab({ url: '/pages/library/library' })
-  },
-  goMall() {
-    wx.switchTab({ url: '/pages/mall/mall' })
-  }
-})
+  toLibrary(){ wx.switchTab({ url:'/pages/library/library' }); },
+  toDetail(e){ wx.navigateTo({ url:`/pages/detail/detail?id=${e.currentTarget.dataset.id}` }); }
+});

@@ -1,6 +1,14 @@
-<view class="container">
-  <image src="../../assets/sample.jpg" mode="aspectFit" class="hero"/>
-  <text class="title">手串名称（示例）</text>
-  <button>解锁</button>
-  <button>前往购买</button>
+<view class="page detail">
+  <view class="hero">
+    <image class="bg" src="../../assets/detail-hero.jpg" mode="aspectFill"/>
+    <image class="prod" src="{{p.img}}" mode="aspectFit"/>
+  </view>
+
+  <view class="info">
+    <view class="title">{{p.name || '手串名称'}}</view>
+    <view class="row">
+      <button class="btn ghost" bindtap="unlock" wx:if="{{!owned}}">解锁</button>
+      <button class="btn" bindtap="buy">前往购买</button>
+    </view>
+  </view>
 </view>

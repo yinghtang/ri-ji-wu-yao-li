@@ -1,14 +1,9 @@
-.p16{padding:32rpx}
-.h1{font-size:34rpx;font-weight:600}
-.sub{color:#666;font-size:26rpx}
-.mt8{margin-top:16rpx}
-.sp16{height:32rpx}
-.row{display:flex;align-items:center;justify-content:space-between}
-.hero{width:100%;height:420rpx;border-radius:24rpx;box-shadow:0 12rpx 32rpx rgba(0,0,0,.06)}
-.btn{background:#C9A24B;color:#fff;border-radius:9999rpx;padding:24rpx 0}
-.tag{padding:6rpx 16rpx;border-radius:9999rpx;font-size:22rpx}
-.tag-wood{background:#E7F2E5;color:#3d6d2f}
-.tag-fire{background:#fde9e7;color:#b43b34}
-.tag-earth{background:#fff4da;color:#9a6b24}
-.tag-metal{background:#f2f2f2;color:#6b6b6b}
-.tag-water{background:#e7eefb;color:#355a93}
+.page.detail{ background:#F7F3EA; }
+.hero{ position:relative; height:520rpx; overflow:hidden; }
+.hero .bg{ position:absolute; inset:0; filter:brightness(1.05); }
+.hero .prod{ position:relative; z-index:1; width:100%; height:100%; }
+.info{ padding:28rpx; }
+.title{ font-size:36rpx; font-weight:600; margin-bottom:16rpx; }
+.row{ display:flex; gap:16rpx; }
+.btn{ flex:1; padding:22rpx 0; border-radius:9999rpx; background:#c2453d; color:#fff; }
+.btn.ghost{ background:#fff; color:#c2453d; border:1px solid #c2453d; }
