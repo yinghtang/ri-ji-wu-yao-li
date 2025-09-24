@@ -1,35 +1,73 @@
 <view class="page index">
-  <!-- 顶部主视觉轮播 -->
-  <swiper class="hero-swiper" autoplay interval="5000" duration="400" circular>
-    <swiper-item>
-      <image class="hero-bg" src="../../assets/hero-calendar/hero-calender-1.jpg" mode="aspectFill"/>
-    </swiper-item>
-    <swiper-item>
-      <image class="hero-bg" src="../../assets/hero-calendar/hero-calender-2.jpg" mode="aspectFill"/>
-    </swiper-item>
-    <swiper-item>
-      <image class="hero-bg" src="../../assets/hero-calendar/hero-calender-3.jpg" mode="aspectFill"/>
-    </swiper-item>
-  </swiper>
 
-  <!-- 今日推荐 -->
-  <view class="section">
-    <view class="h1">今日推荐</view>
+<!-- 顶部主视觉轮播（使用你的路径与文件名 calender） -->
+<swiper class="hero-swiper" autoplay interval="5000" duration="400" circular>
+  <swiper-item><image class="hero-bg" src="../../assets/hero-calendar/hero-calendar-3.jpg" mode="aspectFill"/></swiper-item>
+  <swiper-item><image class="hero-bg" src="../../assets/hero-calendar/hero-calendar-5.jpg" mode="aspectFill"/></swiper-item>
+  <swiper-item><image class="hero-bg" src="../../assets/hero-calendar/hero-calendar-6.jpg" mode="aspectFill"/></swiper-item>
+</swiper>
 
-    <view class="card" bindtap="toDetail" data-id="p-water">
-      <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
-      <image class="prod" src="../../assets/p/p-water.jpg" mode="aspectFit"/>
-      <view class="name">玄渊 · 静志</view>
-      <view class="tag water">水</view>
+<!-- 悬浮黄历卡片：最上方显示 -->
+<view class="lunar-wrap">
+  <view class="lunar-card" wx:if="{{!loading && lunarData}}">
+    <view class="halo"></view>
+
+    <view class="card-head">
+      <view class="date-col">
+        <view class="greg">{{lunarData.gregoriandate}}</view>
+        <view class="lunar">{{lunarData.lunardate}} · {{lunarData.shengxiao}}</view>
+        <view class="gz" wx:if="{{lunarData.tiangandizhiyear || lunarData.tiangandizhimonth || lunarData.tiangandizhiday}}">
+          {{lunarData.tiangandizhiyear}} {{lunarData.tiangandizhimonth}} {{lunarData.tiangandizhiday}}
+        </view>
+      </view>
+      <view class="badge" wx:if="{{lunarData.wuxingjiazi}}">
+        {{lunarData.wuxingjiazi}}
+      </view>
     </view>
 
-    <view class="card" bindtap="toDetail" data-id="p-earth">
-      <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
-      <image class="prod" src="../../assets/p/p-earth.jpg" mode="aspectFit"/>
-      <view class="name">黄璨 · 镇财</view>
-      <view class="tag earth">土</view>
+    <view class="divider"></view>
+
+    <view class="pair">
+      <view class="kv yi" wx:if="{{fitText}}">
+        <text class="k">宜</text>
+        <text class="v">{{fitText}}</text>
+      </view>
+      <view class="kv ji" wx:if="{{avoidText}}">
+        <text class="k">忌</text>
+        <text class="v">{{avoidText}}</text>
+      </view>
     </view>
 
-    <button class="btn" bindtap="toLibrary">进入图鉴</button>
+    <view class="extras" wx:if="{{lunarData.lunar_festival || lunarData.festival || lunarData.chongsha}}">
+      <text wx:if="{{lunarData.lunar_festival || lunarData.festival}}">节令：{{lunarData.lunar_festival || lunarData.festival}}</text>
+      <text wx:if="{{lunarData.chongsha}}">冲煞：{{lunarData.chongsha}}</text>
+    </view>
   </view>
+
+  <!-- 简单骨架屏 -->
+  <view class="lunar-skeleton" wx:if="{{loading}}">
+    <view class="sk sk1"></view>
+    <view class="sk sk2"></view>
+    <view class="sk sk3"></view>
+  </view>
+</view>
+
+<!-- 内容区：今日推荐示例（可替换为你的绑定） -->
+<view class="section">
+  <view class="h1">今日推荐</view>
+
+  <view class="card" bindtap="toDetail" data-id="p-water">
+    <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
+    <image class="prod" src="../../assets/p/p-water.jpg" mode="aspectFit"/>
+    <view class="name">玄渊 · 静志</view>
+  </view>
+
+  <view class="card" bindtap="toDetail" data-id="p-earth">
+    <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
+    <image class="prod" src="../../assets/p/p-earth.jpg" mode="aspectFit"/>
+    <view class="name">黄璨 · 镇财</view>
+  </view>
+
+  <button class="btn" bindtap="toLibrary">进入图鉴</button>
+</view>
 </view>

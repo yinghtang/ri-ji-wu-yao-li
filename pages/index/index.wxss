@@ -1,30 +1,97 @@
-/* 页面与主视觉 */
-.page.index{ position:relative; min-height:100vh; background:#F7F3EA; }
+/* 基础 */
+page{ background:#F7F3EA; color:#1F1F1F; }
+.page.index{ position:relative; min-height:100vh; }
+
+/* 顶部主视觉 */
 .hero-swiper{
   position:absolute; left:0; top:0; width:100%; height:520rpx; z-index:0;
   border-bottom-left-radius:28rpx; border-bottom-right-radius:28rpx; overflow:hidden;
+  box-shadow:0 10rpx 30rpx rgba(0,0,0,.06);
 }
-.hero-bg{ width:100%; height:100%; display:block; }
+.hero-bg{ width:100%; height:100%; display:block; filter:brightness(1.06) saturate(1.05); }
 
-/* 主体区块 */
-.section{ position:relative; z-index:1; padding:28rpx; margin-top:420rpx; }
-.h1{ font-size:34rpx; font-weight:600; margin-bottom:16rpx; }
+/* 悬浮黄历卡容器 */
+.lunar-wrap{
+  position:relative; z-index:2;
+  padding: 28rpx;
+  padding-top: 400rpx; /* 让卡片紧贴主视觉底部，显得在最上方 */
+}
 
-/* 推荐卡片 */
-.card{ position:relative; overflow:hidden; border-radius:20rpx; margin-bottom:20rpx; }
+/* 黄历卡 */
+.lunar-card{
+  position:relative; overflow:hidden;
+  border-radius:22rpx; padding:22rpx;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(8px) saturate(120%);
+  box-shadow: 0 8rpx 28rpx rgba(0,0,0,.08);
+  animation: fadeUp .35s ease-out;
+}
+
+/* 光环装饰（纯样式） */
+.lunar-card .halo{
+  position:absolute; inset:-40rpx -40rpx auto auto; width:220rpx; height:220rpx;
+  background: radial-gradient(closest-side, rgba(201,140,43,0.18), rgba(25,60,122,0.10), transparent 70%);
+  filter: blur(6rpx);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+/* 头部：日期+徽章 */
+.card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:16rpx; }
+.date-col{ display:flex; flex-direction:column; gap:6rpx; }
+.greg{ font-size:32rpx; font-weight:600; }
+.lunar,.gz{ font-size:24rpx; color:#666; }
+
+.badge{
+  background:#193C7A; color:#fff;
+  padding:10rpx 16rpx; border-radius:9999rpx; font-size:22rpx; white-space:nowrap;
+  box-shadow:0 4rpx 10rpx rgba(25,60,122,.18);
+}
+
+/* 分隔线 */
+.divider{
+  height:1rpx; background:linear-gradient(90deg, transparent, #E9E2D4, transparent);
+  margin:16rpx 0;
+}
+
+/* 宜/忌 两列 */
+.pair{ display:flex; gap:12rpx; }
+.kv{ flex:1; background:#F9F6EE; border-radius:14rpx; padding:14rpx; min-height:84rpx; }
+.kv .k{
+  display:inline-block; width:40rpx; height:40rpx; line-height:40rpx; text-align:center;
+  border-radius:9999rpx; margin-right:10rpx; font-weight:600; color:#fff;
+}
+.kv.yi .k{ background:#0F7A6B; }  /* 木青 */
+.kv.ji .k{ background:#D8403A; }  /* 朱砂 */
+.kv .v{ color:#333; font-size:24rpx; line-height:1.6; }
+
+/* 额外信息 */
+.extras{ display:flex; gap:16rpx; flex-wrap:wrap; margin-top:10rpx; color:#6b6b6b; font-size:22rpx; }
+
+/* 骨架屏 */
+.lunar-skeleton{ margin:0 28rpx; background:#fff; border-radius:20rpx; padding:22rpx; box-shadow:0 8rpx 24rpx rgba(0,0,0,.06); }
+.sk{ height:26rpx; background:linear-gradient(90deg,#eee,#f6f6f6,#eee); border-radius:8rpx; margin-bottom:12rpx; }
+.sk1{ width:60%; height:36rpx; }
+.sk2{ width:90%; }
+.sk3{ width:75%; }
+
+/* 后续内容区 */
+.section{ position:relative; z-index:1; padding:28rpx; }
+.h1{ font-size:34rpx; font-weight:600; margin:18rpx 0; }
+
+.card{ position:relative; overflow:hidden; border-radius:20rpx; margin-bottom:20rpx; box-shadow:0 6rpx 18rpx rgba(0,0,0,.06); }
 .card-bg{ position:absolute; inset:0; filter:brightness(1.02); opacity:.95; }
 .prod{ width:100%; height:360rpx; display:block; position:relative; z-index:1; }
 .name{
   position:absolute; left:24rpx; bottom:24rpx; z-index:2;
   color:#222; background:rgba(255,255,255,.78); padding:6rpx 14rpx;
-  border-radius:9999rpx; font-size:26rpx;
+  border-radius:9999rpx; font-size:26rpx; backdrop-filter:saturate(120%) blur(2px);
 }
-.tag{
-  position:absolute; right:24rpx; bottom:24rpx; z-index:2;
-  padding:6rpx 16rpx; border-radius:9999rpx; font-size:22rpx; color:#fff;
-}
-.tag.water{ background:#193C7A; }
-.tag.earth{ background:#C98C2B; }
 
-/* 按钮 */
 .btn{ width:100%; border-radius:9999rpx; background:#c2453d; color:#fff; padding:22rpx 0; margin-top:6rpx; }
+
+/* 动画 */
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(12rpx); }
+  to{ opacity:1; transform:translateY(0); }
+}

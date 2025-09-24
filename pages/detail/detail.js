@@ -1,9 +1,9 @@
 const ALL = {
-  'p-wood':  { name:'青木·清心', img:'../../assets/p-wood.png'  },
-  'p-fire':  { name:'朱炎·勇志', img:'../../assets/p-fire.png'  },
-  'p-earth': { name:'黄璨·镇财', img:'../../assets/p-earth.png' },
-  'p-metal': { name:'白曜·断秽', img:'../../assets/p-metal.png' },
-  'p-water': { name:'玄渊·静志', img:'../../assets/p-water.png' }
+  'p-wood':  { name:'青木·清心', img:'../../assets/p-wood.jpg'  },
+  'p-fire':  { name:'朱炎·勇志', img:'../../assets/p-fire.jpg'  },
+  'p-earth': { name:'黄璨·镇财', img:'../../assets/p-earth.jpg' },
+  'p-metal': { name:'白曜·断秽', img:'../../assets/p-metal.jpg' },
+  'p-water': { name:'玄渊·静志', img:'../../assets/p-water.jpg' }
 };
 Page({
   data:{ p:{}, owned:false },
