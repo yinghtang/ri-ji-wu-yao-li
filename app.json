@@ -18,15 +18,30 @@
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
-      { "pagePath": "pages/index/index",   "text": "日历",
-        "iconPath": "assets/tabs/unselected/tab-calendar.png", "selectedIconPath": "assets/tabs/selected/tab-calendar-s.png" },
-      { "pagePath": "pages/library/library","text": "图鉴",
-        "iconPath": "assets/tabs/unselected/tab-library.png",  "selectedIconPath": "assets/tabs/selected/tab-library-s.png" },
-      { "pagePath": "pages/mall/mall",      "text": "商城",
-        "iconPath": "assets/tabs/unselected/tab-mall.png",     "selectedIconPath": "assets/tabs/selected/tab-mall-s.png" },
-      { "pagePath": "pages/profile/profile","text": "我的",
-        "iconPath": "assets/tabs/unselected/tab-profile.png",  "selectedIconPath": "assets/tabs/selected/tab-profile-s.png" }
+      {
+        "pagePath": "pages/index/index",
+        "text": "日历",
+        "iconPath": "assets/tabs/unselected/tab-calendar.png",
+        "selectedIconPath": "assets/tabs/selected/tab-calendar-s.png"
+      },
+      {
+        "pagePath": "pages/library/library",
+        "text": "图鉴",
+        "iconPath": "assets/tabs/unselected/tab-library.png",
+        "selectedIconPath": "assets/tabs/selected/tab-library-s.png"
+      },
+      {
+        "pagePath": "pages/mall/mall",
+        "text": "商城",
+        "iconPath": "assets/tabs/unselected/tab-mall.png",
+        "selectedIconPath": "assets/tabs/selected/tab-mall-s.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/tabs/unselected/tab-profile.png",
+        "selectedIconPath": "assets/tabs/selected/tab-profile-s.png"
+      }
     ]
   }
-  
 }
