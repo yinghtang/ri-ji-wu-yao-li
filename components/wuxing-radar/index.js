@@ -1,195 +1,194 @@
+// components/wuxing-radar/index.js
 Component({
-  options: { pureDataPattern: /^_/ },
-
   properties: {
-    scores:   { type: Object,  value: null },
-    width:    { type: Number,  value: 560 }, // rpx
-    height:   { type: Number,  value: 360 }, // rpx
-    autoplay: { type: Boolean, value: true },
-    waveAmp:  { type: Number,  value: 6 },   // rpx
-    waveFreq: { type: Number,  value: 2.0 },
-    waveSpeed:{ type: Number,  value: 0.6 },
-    breathe:  { type: Number,  value: 0.02 }
+    scores: { type: Object, value: { "木": 60, "火": 80, "土": 50, "金": 40, "水": 70 } },
+    size:   { type: Number, value: 260 },
+    levels: { type: Number, value: 5 }
+  },
+
+  data: { _mode: '2d' }, // '2d' | 'legacy'
+
+  lifetimes: {
+    attached() { this._init(); },
+    ready() { this._draw(); }
   },
 
   observers: {
-    scores(val) {
-      this._scores = val;
-      if (this._ctx && val) this._renderFrame(val, this._lastT || 0);
-    }
-  },
-
-  lifetimes: {
-    attached() {
-      // 提前缓存 windowWidth
-      const w = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
-      this._windowWidth = w.windowWidth;
-    },
-    ready() {
-      this._initCanvasWithRetry();
-    },
-    detached() { this._stopAnim(); }
-  },
-
-  pageLifetimes: {
-    show() { if (this.properties.autoplay) this._startAnim(); },
-    hide() { this._stopAnim(); }
+    'scores, size, levels': function () { this._draw(); }
   },
 
   methods: {
-    // —— 安全封装：拿不到 node 就重试（最多 2 次）
-    _initCanvasWithRetry(retry = 0) {
-      this.createSelectorQuery()
-        .in(this)
-        .select('#radarCanvas')
-        .fields({ node: true, size: true })
-        .exec(res => {
-          const info = res && res[0];
-          const canvas = info && info.node;
-          if (!canvas) {
-            if (retry < 2) {
-              // 可能组件刚插入，下一帧再试
-              wx.nextTick(() => this._initCanvasWithRetry(retry + 1));
-              return;
-            }
-            console.warn('[wuxing-radar] 获取 canvas 失败，检查 id/路径/usingComponents');
-            return;
-          }
-          this._setupCanvas(canvas);
-        });
-    },
+    _init() {
+      // 优先尝试 2D Canvas node
+      const dpr = wx.getSystemInfoSync().pixelRatio || 1;
+      this.dpr = dpr;
 
-    _setupCanvas(canvas) {
-      const ctx = canvas.getContext('2d');
+      const query = this.createSelectorQuery().in(this); // 关键：限定在组件内
+      query.select('#radar').fields({ node: true, size: true }).exec(res => {
+        const item = res && res[0];
+        if (item && item.node) {
+          // —— 2D 模式 ——
+          const canvas = item.node;
+          const width  = this.data.size * dpr;
+          const height = this.data.size * dpr;
+          canvas.width  = width;
+          canvas.height = height;
 
-      const sys = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
-      const dpr = sys.pixelRatio || 2;
-
-      const viewW = this._rpx2px(this.properties.width);
-      const viewH = this._rpx2px(this.properties.height);
-
-      // 这里就是你报错的地方；加了空值保护
-      if (!canvas) return;
-
-      canvas.width  = Math.round(viewW * dpr);
-      canvas.height = Math.round(viewH * dpr);
-      canvas.style.width  = `${viewW}px`;
-      canvas.style.height = `${viewH}px`;
-      ctx.scale(dpr, dpr);
-
-      this._canvas = canvas;
-      this._ctx = ctx;
-      this._W = viewW;
-      this._H = viewH;
-
-      if (this.properties.autoplay) this._startAnim();
-      if (this._scores) this._renderFrame(this._scores, 0);
-    },
-
-    _startAnim() {
-      if (!this._canvas || this._animId) return;
-      this._t0 = Date.now();
-      const tick = () => {
-        const t = (Date.now() - this._t0) / 1000;
-        this._lastT = t;
-        if (this._scores) this._renderFrame(this._scores, t);
-        this._animId = this._canvas.requestAnimationFrame(tick);
-      };
-      this._animId = this._canvas.requestAnimationFrame(tick);
-    },
-
-    _stopAnim() {
-      if (this._canvas && this._animId) {
-        this._canvas.cancelAnimationFrame(this._animId);
-        this._animId = null;
-      }
-    },
-
-    _renderFrame(scores, t) {
-      const ctx = this._ctx; if (!ctx) return;
-      const W = this._W, H = this._H;
-      const cx = W / 2, cy = H / 2 + this._rpx2px(4);
-
-      const baseR = Math.min(W * 0.38, H * 0.44);
-      const R = baseR * (1 + this.properties.breathe * Math.sin(t * Math.PI * 0.5));
-
-      ctx.clearRect(0, 0, W, H);
-
-      const labels = ['木','火','土','金','水'];
-      const angles = labels.map((_, i) => -Math.PI/2 + i*2*Math.PI/labels.length);
-
-      // 背景网格
-      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(0,0,0,0.06)';
-      for (let k=1;k<=5;k++){
-        const r = R*k/5; ctx.beginPath();
-        for (let i=0;i<angles.length;i++){
-          const x = cx + r*Math.cos(angles[i]);
-          const y = cy + r*Math.sin(angles[i]);
-          i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+          this.canvas = canvas;
+          this.ctx = canvas.getContext('2d');
+          this.setData({ _mode: '2d' }, () => this._draw());
+        } else {
+          // —— 兜底：老 Canvas 模式 ——
+          this.setData({ _mode: 'legacy' }, () => this._drawLegacyInit());
         }
-        ctx.closePath(); ctx.stroke();
-      }
-      // 轴线
-      for (let i=0;i<angles.length;i++){
-        const a = angles[i];
-        ctx.beginPath(); ctx.moveTo(cx,cy);
-        ctx.lineTo(cx + R*Math.cos(a), cy + R*Math.sin(a));
+      });
+    },
+
+    _draw() {
+      if (this.data._mode === '2d') this._draw2d();
+      else if (this.data._mode === 'legacy') this._drawLegacy();
+    },
+
+    /* ================= 2D Canvas 版本 ================= */
+    _draw2d() {
+      if (!this.ctx) return;
+      const ctx = this.ctx;
+      const size = this.data.size * this.dpr;
+      const cx = size / 2, cy = size / 2;
+      const radius = size * 0.42;
+      const axes = ["木", "火", "土", "金", "水"];
+      const levels = Math.max(1, this.data.levels);
+
+      ctx.clearRect(0, 0, size, size);
+      ctx.lineWidth = 1 * this.dpr;
+      ctx.font = `${12 * this.dpr}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      for (let l = 1; l <= levels; l++) {
+        const r = (radius / levels) * l;
+        ctx.beginPath();
+        axes.forEach((_, i) => {
+          const ang = (Math.PI * 2 / axes.length) * i - Math.PI / 2;
+          const x = cx + r * Math.cos(ang);
+          const y = cy + r * Math.sin(ang);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+        ctx.strokeStyle = '#e5e5e5';
         ctx.stroke();
       }
 
-      // 顶点
-      const val = k => (scores[k] || 0) / 100;
-      const pts = angles.map((ang,i)=>{
-        const rr = R * val(labels[i]);
-        return { x: cx + rr*Math.cos(ang), y: cy + rr*Math.sin(ang) };
+      axes.forEach((k, i) => {
+        const ang = (Math.PI * 2 / axes.length) * i - Math.PI / 2;
+        const x = cx + radius * Math.cos(ang);
+        const y = cy + radius * Math.sin(ang);
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y);
+        ctx.strokeStyle = '#ddd'; ctx.stroke();
+
+        const lx = cx + (radius + 16 * this.dpr) * Math.cos(ang);
+        const ly = cy + (radius + 16 * this.dpr) * Math.sin(ang);
+        ctx.fillStyle = '#333'; ctx.fillText(k, lx, ly);
       });
 
-      // 波浪边
-      const amp   = this._rpx2px(this.properties.waveAmp);
-      const speed = this.properties.waveSpeed;
-      const freq  = this.properties.waveFreq;
-      const SAMPLES = 48;
-
-      ctx.fillStyle   = 'rgba(25,60,122,0.16)';
-      ctx.strokeStyle = 'rgba(25,60,122,0.38)';
-      ctx.lineWidth   = 2;
+      const vals = ["木","火","土","金","水"].map(k => {
+        const v = Number(this.data.scores?.[k] ?? 0);
+        return Math.max(0, Math.min(100, v));
+      });
 
       ctx.beginPath();
-      for (let e=0; e<pts.length; e++){
-        const a = pts[e], b = pts[(e+1)%pts.length];
-        const tx = b.x - a.x, ty = b.y - a.y;
-        const len = Math.hypot(tx,ty) || 1;
-        const nx = -ty/len, ny = tx/len;
+      vals.forEach((v, i) => {
+        const ang = (Math.PI * 2 / vals.length) * i - Math.PI / 2;
+        const r = radius * (v / 100);
+        const x = cx + r * Math.cos(ang);
+        const y = cy + r * Math.sin(ang);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(66,133,244,0.25)'; ctx.fill();
+      ctx.strokeStyle = '#4285F4'; ctx.lineWidth = 2 * this.dpr; ctx.stroke();
 
-        for (let s=0; s<=SAMPLES; s++){
-          const u = s/SAMPLES;
-          const bx = a.x + tx*u, by = a.y + ty*u;
-          const phase = e*Math.PI/3;
-          const off = amp * Math.sin(u*2*Math.PI*freq + t*speed*2*Math.PI + phase);
-          const x = bx + nx*off*0.5, y = by + ny*off*0.5;
-          (e===0 && s===0) ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-        }
-      }
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // 边外文字
-      ctx.fillStyle = '#444';
-      ctx.font = `${this._rpx2px(22)}px sans-serif`;
-      for (let e=0; e<pts.length; e++){
-        const a = pts[e], b = pts[(e+1)%pts.length];
-        const mx = (a.x+b.x)/2, my = (a.y+b.y)/2;
-        const tx = b.x - a.x, ty = b.y - a.y;
-        const len = Math.hypot(tx,ty)||1, nx = -ty/len, ny = tx/len;
-        const lx = mx + nx*this._rpx2px(18), ly = my + ny*this._rpx2px(18);
-        const key = labels[(e+1)%pts.length], v = scores[key] || 0;
-        const approx = this._rpx2px(44);
-        ctx.fillText(`${key} ${v}`, lx >= cx ? lx : lx - approx, ly + this._rpx2px(6));
-      }
+      vals.forEach((v, i) => {
+        const ang = (Math.PI * 2 / vals.length) * i - Math.PI / 2;
+        const r = radius * (v / 100);
+        const x = cx + r * Math.cos(ang);
+        const y = cy + r * Math.sin(ang);
+        ctx.beginPath(); ctx.arc(x, y, 3 * this.dpr, 0, Math.PI * 2);
+        ctx.fillStyle = '#4285F4'; ctx.fill();
+      });
     },
 
-    _rpx2px(rpx) {
-      const w = this._windowWidth || (wx.getWindowInfo ? wx.getWindowInfo().windowWidth : wx.getSystemInfoSync().windowWidth);
-      return (rpx * w) / 750;
+    /* ============== 旧 Canvas（createCanvasContext）版 ============== */
+    _drawLegacyInit() {
+      // 老版不支持 devicePixelRatio 设置画布宽高，这里用 CSS 控大小
+      this.ctxLegacy = wx.createCanvasContext('radar', this);
+      this._drawLegacy();
+    },
+
+    _drawLegacy() {
+      const ctx = this.ctxLegacy;
+      if (!ctx) return;
+
+      const size = this.data.size; // 旧接口按 CSS 尺寸作图
+      const cx = size / 2, cy = size / 2;
+      const radius = size * 0.42;
+      const axes = ["木", "火", "土", "金", "水"];
+      const levels = Math.max(1, this.data.levels);
+
+      // 参考网格
+      for (let l = 1; l <= levels; l++) {
+        const r = (radius / levels) * l;
+        axes.forEach((_, i) => {
+          const ang = (Math.PI * 2 / axes.length) * i - Math.PI / 2;
+          const x = cx + r * Math.cos(ang);
+          const y = cy + r * Math.sin(ang);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.setStrokeStyle('#e5e5e5'); ctx.stroke();
+        ctx.beginPath();
+      }
+
+      // 轴线 + 标签
+      axes.forEach((k, i) => {
+        const ang = (Math.PI * 2 / axes.length) * i - Math.PI / 2;
+        const x = cx + radius * Math.cos(ang);
+        const y = cy + radius * Math.sin(ang);
+        ctx.moveTo(cx, cy); ctx.lineTo(x, y);
+        ctx.setStrokeStyle('#ddd'); ctx.stroke(); ctx.beginPath();
+
+        const lx = cx + (radius + 16) * Math.cos(ang);
+        const ly = cy + (radius + 16) * Math.sin(ang);
+        ctx.setFillStyle('#333'); ctx.setFontSize(12); ctx.fillText(k, lx - 6, ly + 4);
+      });
+
+      // 数据区
+      const vals = ["木","火","土","金","水"].map(k => {
+        const v = Number(this.data.scores?.[k] ?? 0);
+        return Math.max(0, Math.min(100, v));
+      });
+
+      vals.forEach((v, i) => {
+        const ang = (Math.PI * 2 / vals.length) * i - Math.PI / 2;
+        const r = radius * (v / 100);
+        const x = cx + r * Math.cos(ang);
+        const y = cy + r * Math.sin(ang);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.setFillStyle('rgba(66,133,244,0.25)'); ctx.fill();
+      ctx.setStrokeStyle('#4285F4'); ctx.setLineWidth(2); ctx.stroke();
+
+      // 顶点圆点
+      vals.forEach((v, i) => {
+        const ang = (Math.PI * 2 / vals.length) * i - Math.PI / 2;
+        const r = radius * (v / 100);
+        const x = cx + r * Math.cos(ang);
+        const y = cy + r * Math.sin(ang);
+        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.setFillStyle('#4285F4'); ctx.fill();
+      });
+
+      ctx.draw();
     }
   }
 });

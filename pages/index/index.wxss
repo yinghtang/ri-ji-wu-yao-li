@@ -1,7 +1,45 @@
-page{ background:#F7F3EA; }
-.page{ padding:24rpx 32rpx 40rpx; }
-.card{
-  width:100%; max-width:686rpx; background:#fff; border-radius:20rpx;
-  padding:20rpx; margin:0 auto; box-shadow:0 8rpx 24rpx rgba(0,0,0,.08);
+page { background: #f7f5f2; }
+
+.hero-swiper { height: 300rpx; }
+.hero-bg { width: 100%; height: 100%; filter: saturate(.95) brightness(.99); }
+
+.card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin: -60rpx 24rpx 24rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0,0,0,.06);
 }
-.title{ font-size:28rpx; font-weight:600; margin-bottom:12rpx; }
+.calendar-card { margin-top: -60rpx; }
+
+.row { display: flex; align-items: center; }
+.between { justify-content: space-between; }
+
+.date .g { font-size: 30rpx; font-weight: 600; color: #111; }
+.date .l { margin-top: 6rpx; color: #666; font-size: 24rpx; }
+.date .t { margin-top: 2rpx; color: #8c8c8c; font-size: 22rpx; }
+
+.badge { background: #f0f6ff; color: #2b5cff; padding: 8rpx 16rpx; border-radius: 999rpx; font-size: 22rpx; }
+
+.tags { margin-top: 16rpx; display: grid; gap: 8rpx; }
+.tag { border-radius: 12rpx; padding: 10rpx 12rpx; line-height: 1.4; font-size: 22rpx; }
+.tag.ok { background: #f6fff3; color: #3c8746; }
+.tag.no { background: #fff5f5; color: #c44747; }
+
+.meta { display: flex; gap: 16rpx; margin-top: 10rpx; color: #8c8c8c; font-size: 22rpx; flex-wrap: wrap; }
+
+.card-title { font-size: 28rpx; color: #111; margin-bottom: 12rpx; }
+
+/* 推荐卡 */
+.recommend .rec-item { display: flex; gap: 16rpx; }
+.rec-img { width: 220rpx; height: 220rpx; border-radius: 16rpx; }
+.rec-info { flex: 1; display: flex; flex-direction: column; }
+.rec-name { font-size: 30rpx; font-weight: 600; color: #111; }
+.rec-desc { margin-top: 6rpx; color: #666; font-size: 24rpx; }
+.rec-tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8rpx; }
+.rec-tag { padding: 8rpx 12rpx; background: #f6f7fb; color: #3b4a7b; border-radius: 999rpx; font-size: 22rpx; }
+
+.btn-primary {
+  margin-top: 16rpx; width: 100%; height: 88rpx; line-height: 88rpx;
+  background: #d64d41; color: #fff; border-radius: 999rpx; font-size: 28rpx;
+}

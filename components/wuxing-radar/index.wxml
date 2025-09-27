@@ -1,3 +1,12 @@
-<view class="rj-radar-wrap" style="width: {{width}}rpx; height: {{height}}rpx;">
-  <canvas type="2d" id="radarCanvas" class="rj-radar-cvs"></canvas>
+<!-- components/wuxing-radar/index.wxml -->
+<view class="wuxing-radar">
+  <canvas type="2d" id="radar" class="radar-canvas"></canvas>
+  <view class="legend">
+    <view class="legend-item"><text>木</text><text>{{scores["木"]}}</text></view>
+    <view class="legend-item"><text>火</text><text>{{scores["火"]}}</text></view>
+    <view class="legend-item"><text>土</text><text>{{scores["土"]}}</text></view>
+    <view class="legend-item"><text>金</text><text>{{scores["金"]}}</text></view>
+    <view class="legend-item"><text>水</text><text>{{scores["水"]}}</text></view>
+  </view>
 </view>
+  

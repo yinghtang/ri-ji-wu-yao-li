@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "wuxing-radar": "/components/wuxing-radar/index"
+  }
+}

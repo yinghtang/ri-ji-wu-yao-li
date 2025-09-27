@@ -1,16 +1,57 @@
-<view class="page">
-  <view class="card">
-    <view class="title">今日五行分析</view>
-    <!-- 传分数与尺寸，动画参数可选 -->
-    <wuxing-radar
-      scores="{{scores}}"
-      width="560"
-      height="360"
-      autoplay="{{true}}"
-      waveAmp="6"
-      waveFreq="2"
-      waveSpeed="0.6"
-      breathe="0.02"
-    />
+<!-- 顶部主视觉（轮播） -->
+<swiper class="hero-swiper" autoplay circular interval="4500" duration="500">
+  <block wx:for="{{heroImages}}" wx:key="*this">
+    <swiper-item>
+      <image class="hero-bg" src="{{item}}" mode="aspectFill"></image>
+    </swiper-item>
+  </block>
+</swiper>
+
+<!-- 黄历卡片 -->
+<view class="card calendar-card">
+  <view class="row between">
+    <view class="date">
+      <view class="g">{{calendar.gregoriandate || '--'}}</view>
+      <view class="l">{{calendar.lunardate || '--'}} · {{calendar.shengxiao || '--'}}</view>
+      <view class="t">{{calendar.tiangandizhiyear}} {{calendar.tiangandizhimonth}} {{calendar.tiangandizhiday}}</view>
+    </view>
+    <view class="badge">{{calendar.jianshen || '宜忌'}}</view>
+  </view>
+
+  <view class="tags" wx:if="{{calendar.fitness || calendar.taboo}}">
+    <view class="tag ok" wx:if="{{calendar.fitness}}">{{calendar.fitness}}</view>
+    <view class="tag no" wx:if="{{calendar.taboo}}">{{calendar.taboo}}</view>
+  </view>
+
+  <view class="meta">
+    <text>星宿：{{calendar.xingsu || '-'}}</text>
+    <text>彭祖：{{calendar.pengzu || '-'}}</text>
+    <text>冲煞：{{calendar.chongsha || '-'}}</text>
   </view>
 </view>
+
+<!-- 五行雷达（组件） -->
+<view class="card">
+  <view class="card-title">今日五行分析</view>
+  <wuxing-radar scores="{{wuxingScoresCN}}" />
+</view>
+
+<!-- 今日推荐（根据五行强项变换） -->
+<view class="card recommend">
+  <view class="card-title">今日推荐</view>
+
+  <view class="rec-item" bindtap="goDetail">
+    <image class="rec-img" src="{{recommend.img}}" mode="aspectFill"></image>
+    <view class="rec-info">
+      <view class="rec-name">{{recommend.name}}</view>
+      <view class="rec-desc">{{recommend.desc}}</view>
+      <view class="rec-tags">
+        <text class="rec-tag" wx:for="{{recommend.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-primary" bindtap="goLibrary">进入图鉴</button>
+</view>
+
+<view style="height: 48rpx;"></view>
