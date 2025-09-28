@@ -1,45 +1,42 @@
-page { background: #f7f5f2; }
+.page-index{ background:#fff; min-height:100vh; }
 
-.hero-swiper { height: 300rpx; }
-.hero-bg { width: 100%; height: 100%; filter: saturate(.95) brightness(.99); }
+/* 顶部轮播：固定高度 + 下边距，防止与黄历重叠 */
+.hero{ position:relative; z-index:0; }
+.hero-swiper{ width:100%; height:360rpx; margin-bottom:16rpx; }
+.hero-img{ width:100%; height:100%; display:block; }
 
-.card {
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 24rpx;
-  margin: -60rpx 24rpx 24rpx;
-  box-shadow: 0 8rpx 30rpx rgba(0,0,0,.06);
+/* 黄历卡片（吸顶） */
+.calendar-card{
+  width:92%; margin:0 auto 20rpx; padding:20rpx;
+  background:#fff; border-radius:16rpx;
+  box-shadow:0 6rpx 22rpx rgba(0,0,0,.06);
 }
-.calendar-card { margin-top: -60rpx; }
+.sticky{ position:sticky; top:0; z-index:5; }
 
-.row { display: flex; align-items: center; }
-.between { justify-content: space-between; }
+.c-head{ display:flex; align-items:center; gap:12rpx; margin-bottom:12rpx; flex-wrap:wrap;}
+.c-date{ font-size:28rpx; color:#333; font-weight:600;}
+.c-gan{ font-size:24rpx; color:#666;}
+.c-sx{ font-size:24rpx; color:#9c9c9c; margin-left:auto;}
 
-.date .g { font-size: 30rpx; font-weight: 600; color: #111; }
-.date .l { margin-top: 6rpx; color: #666; font-size: 24rpx; }
-.date .t { margin-top: 2rpx; color: #8c8c8c; font-size: 22rpx; }
+.c-tags{ display:flex; gap:12rpx; flex-wrap:wrap; margin-bottom:12rpx; }
+.tag{ padding:8rpx 12rpx; border-radius:10rpx; font-size:22rpx; }
+.tag-good{ background:#eaf6ee; color:#2f8f4e; }
+.tag-bad{ background:#fdecec; color:#d64d41; }
 
-.badge { background: #f0f6ff; color: #2b5cff; padding: 8rpx 16rpx; border-radius: 999rpx; font-size: 22rpx; }
+.c-meta{ display:grid; grid-template-columns:1fr 1fr; gap:8rpx; color:#888; font-size:22rpx; }
 
-.tags { margin-top: 16rpx; display: grid; gap: 8rpx; }
-.tag { border-radius: 12rpx; padding: 10rpx 12rpx; line-height: 1.4; font-size: 22rpx; }
-.tag.ok { background: #f6fff3; color: #3c8746; }
-.tag.no { background: #fff5f5; color: #c44747; }
+/* 五行区块 */
+.section{ width:92%; margin:0 auto 24rpx; }
+.sec-title{ font-size:28rpx; color:#333; font-weight:600; margin:10rpx 0 16rpx; }
 
-.meta { display: flex; gap: 16rpx; margin-top: 10rpx; color: #8c8c8c; font-size: 22rpx; flex-wrap: wrap; }
-
-.card-title { font-size: 28rpx; color: #111; margin-bottom: 12rpx; }
-
-/* 推荐卡 */
-.recommend .rec-item { display: flex; gap: 16rpx; }
-.rec-img { width: 220rpx; height: 220rpx; border-radius: 16rpx; }
-.rec-info { flex: 1; display: flex; flex-direction: column; }
-.rec-name { font-size: 30rpx; font-weight: 600; color: #111; }
-.rec-desc { margin-top: 6rpx; color: #666; font-size: 24rpx; }
-.rec-tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8rpx; }
-.rec-tag { padding: 8rpx 12rpx; background: #f6f7fb; color: #3b4a7b; border-radius: 999rpx; font-size: 22rpx; }
-
-.btn-primary {
-  margin-top: 16rpx; width: 100%; height: 88rpx; line-height: 88rpx;
-  background: #d64d41; color: #fff; border-radius: 999rpx; font-size: 28rpx;
+/* 推荐卡片 */
+.recommend-card{
+  width:92%; margin:10rpx auto 36rpx; display:flex; gap:16rpx; align-items:center;
+  background:#fff; border-radius:16rpx; padding:16rpx; box-shadow:0 6rpx 22rpx rgba(0,0,0,.06);
 }
+.rec-img{ width:220rpx; height:220rpx; border-radius:14rpx; display:block; }
+.rec-info{ flex:1; }
+.rec-name{ font-size:30rpx; color:#333; font-weight:700; }
+.rec-desc{ margin-top:6rpx; color:#666; font-size:26rpx; }
+.rec-tags{ margin-top:10rpx; display:flex; gap:10rpx; flex-wrap:wrap; }
+.rec-tag{ background:#f5f0ea; color:#a87334; border-radius:10rpx; padding:6rpx 10rpx; font-size:22rpx; }

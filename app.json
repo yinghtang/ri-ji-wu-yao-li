@@ -3,18 +3,19 @@
     "pages/index/index",
     "pages/library/library",
     "pages/mall/mall",
-    "pages/profile/profile",
-    "pages/detail/detail"
+    "pages/profile/profile"
   ],
   "window": {
     "navigationBarTitleText": "日玑",
-    "navigationBarBackgroundColor": "#f8f5f0",
-    "navigationBarTextStyle": "black",
-    "navigationStyle": "default"
-  },
+    "navigationStyle": "default",
+    "navigationBarBackgroundColor": "#ffffff",   
+    "navigationBarTextStyle": "black",          
+    "backgroundColor": "#ffffff",                
+    "backgroundTextStyle": "light"
+    },
   "tabBar": {
-    "color": "#666",
-    "selectedColor": "#c2453d",
+    "selectedColor": "#D64D41",
+    "color": "#888888",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
@@ -42,6 +43,7 @@
         "iconPath": "assets/tabs/unselected/tab-profile.png",
         "selectedIconPath": "assets/tabs/selected/tab-profile-s.png"
       }
+      
     ]
   }
 }

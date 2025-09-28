@@ -1,57 +1,59 @@
-<!-- 顶部主视觉（轮播） -->
-<swiper class="hero-swiper" autoplay circular interval="4500" duration="500">
-  <block wx:for="{{heroImages}}" wx:key="*this">
-    <swiper-item>
-      <image class="hero-bg" src="{{item}}" mode="aspectFill"></image>
-    </swiper-item>
-  </block>
-</swiper>
+<view class="page-index">
 
-<!-- 黄历卡片 -->
-<view class="card calendar-card">
-  <view class="row between">
-    <view class="date">
-      <view class="g">{{calendar.gregoriandate || '--'}}</view>
-      <view class="l">{{calendar.lunardate || '--'}} · {{calendar.shengxiao || '--'}}</view>
-      <view class="t">{{calendar.tiangandizhiyear}} {{calendar.tiangandizhimonth}} {{calendar.tiangandizhiday}}</view>
+<!-- 顶部轮播 -->
+<view class="hero">
+  <swiper class="hero-swiper"
+          autoplay circular interval="4000" duration="500"
+          indicator-dots
+          indicator-color="rgba(0,0,0,.18)"
+          indicator-active-color="#D64D41">
+    <block wx:for="{{heroImages}}" wx:key="*this">
+      <swiper-item>
+        <image class="hero-img" src="{{item}}" mode="aspectFill"/>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+
+<!-- 黄历卡片：即使字段为空也占位，避免整块消失 -->
+<view class="calendar-card sticky">
+  <view class="c-head">
+    <text class="c-date">{{calendar.gregoriandate || '—'}}</text>
+    <text class="c-gan">{{calendar.tiangandizhiyear || ''}} {{calendar.tiangandizhimonth || ''}} {{calendar.tiangandizhiday || ''}}</text>
+    <text class="c-sx">{{calendar.shengxiao || ''}}</text>
+  </view>
+
+  <view class="c-tags">
+    <view class="tag tag-good">{{calendar.fitness || '—'}}</view>
+    <view class="tag tag-bad">{{calendar.taboo || '—'}}</view>
+  </view>
+
+  <view class="c-meta">
+    <text>星宿：{{calendar.xingsu || '—'}}</text>
+    <text>冲煞：{{calendar.chongsha || '—'}}</text>
+    <text>彭祖：{{calendar.pengzu || '—'}}</text>
+    <text>建神：{{calendar.jianshen || '—'}}</text>
+  </view>
+</view>
+
+<!-- 五行雷达（仅图） -->
+<view class="section">
+  <view class="sec-title">今日五行分析</view>
+  <wuxing-radar scores="{{wuxingScoresCN}}"></wuxing-radar>
+</view>
+
+<!-- 今日推荐（根据五行最强项） -->
+<view class="recommend-card">
+  <image class="rec-img" src="{{recommend.img}}" mode="aspectFill"/>
+  <view class="rec-info">
+    <view class="rec-name">{{recommend.name}}</view>
+    <view class="rec-desc">{{recommend.desc}}</view>
+    <view class="rec-tags">
+      <block wx:for="{{recommend.tags}}" wx:key="*this">
+        <text class="rec-tag">{{item}}</text>
+      </block>
     </view>
-    <view class="badge">{{calendar.jianshen || '宜忌'}}</view>
-  </view>
-
-  <view class="tags" wx:if="{{calendar.fitness || calendar.taboo}}">
-    <view class="tag ok" wx:if="{{calendar.fitness}}">{{calendar.fitness}}</view>
-    <view class="tag no" wx:if="{{calendar.taboo}}">{{calendar.taboo}}</view>
-  </view>
-
-  <view class="meta">
-    <text>星宿：{{calendar.xingsu || '-'}}</text>
-    <text>彭祖：{{calendar.pengzu || '-'}}</text>
-    <text>冲煞：{{calendar.chongsha || '-'}}</text>
   </view>
 </view>
 
-<!-- 五行雷达（组件） -->
-<view class="card">
-  <view class="card-title">今日五行分析</view>
-  <wuxing-radar scores="{{wuxingScoresCN}}" />
 </view>
-
-<!-- 今日推荐（根据五行强项变换） -->
-<view class="card recommend">
-  <view class="card-title">今日推荐</view>
-
-  <view class="rec-item" bindtap="goDetail">
-    <image class="rec-img" src="{{recommend.img}}" mode="aspectFill"></image>
-    <view class="rec-info">
-      <view class="rec-name">{{recommend.name}}</view>
-      <view class="rec-desc">{{recommend.desc}}</view>
-      <view class="rec-tags">
-        <text class="rec-tag" wx:for="{{recommend.tags}}" wx:key="*this">{{item}}</text>
-      </view>
-    </view>
-  </view>
-
-  <button class="btn-primary" bindtap="goLibrary">进入图鉴</button>
-</view>
-
-<view style="height: 48rpx;"></view>

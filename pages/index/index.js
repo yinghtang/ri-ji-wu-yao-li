@@ -1,41 +1,32 @@
-const TIAN_KEY = 'b988a9f83124836eed4cf203b143e40f';
+// 替换为你的真实 Key；确保把 https://apis.tianapi.com 配到 request 合法域名
+const TIAN_KEY = '你的天行数据KEY';
 
 Page({
   data: {
     heroImages: [
-      '/assets/hero-calendar/hero-calendar-3.jpg',
-      '/assets/hero-calendar/hero-calendar-5.jpg',
-      '/assets/hero-calendar/hero-calendar-7.jpg'
+      '/assets/p/p-earth.jpg',
+      '/assets/p/p-water.jpg',
+      '/assets/p/p-wood.jpg'
     ],
-    calendar: {},
-    // 组件吃「中文键」：{ 木/火/土/金/水 }
-    wuxingScoresCN: { 木: 60, 火: 80, 土: 50, 金: 40, 水: 70 },
-    recommend: {
-      name: '青木手串',
-      img: '/assets/p/p-wood.jpg',
-      desc: '生发、舒展平衡',
-      tags: ['木旺','今日应景']
-    }
+    calendar: {},                                 // 黄历对象
+    wuxingScoresCN: { 木:60, 火:80, 土:50, 金:40, 水:70 }, // 初始示例分
+    recommend: { name: '青木手串', img: '/assets/p/p-wood.jpg', desc: '生发舒展，助力平衡', tags: ['木旺','今日应景'] }
   },
 
   onLoad() {
-    // 1) 拉天行老黄历
     this.fetchCalendar();
-    // 2) 如果你已经能在本地算当日五行（不依赖接口），也可以直接 setScoresFromYourAlgo(...)
   },
 
-  onShow(){},
-
-  // ———————— 天行 · 老黄历 ————————
+  // 拉取黄历 + 计算五行 + 更新推荐
   fetchCalendar() {
     wx.request({
       url: 'https://apis.tianapi.com/lunar/index',
       method: 'GET',
-      data: { key: TIAN_KEY },
+      data: { key:"b988a9f83124836eed4cf203b143e40f"},
       success: (res) => {
         const { code, result } = res.data || {};
         if (code !== 200 || !result) {
-          console.warn('黄历接口异常', res.data);
+          // 接口异常也保留已有 UI
           return;
         }
         const calendar = {
@@ -56,49 +47,37 @@ Page({
           wuxingnamonth: result.wuxingnamonth || ''
         };
 
-        // 关键：把你的五行打分算法接进来
-        const scoresCN = this.computeScoresFromLunar(calendar); // ← 把你的代码粘进去
-        this.setData({ calendar, wuxingScoresCN: scoresCN }, () => {
-          this.updateRecommend(scoresCN);
-        });
+        // 1) 算五行
+        const scoresCN = this.computeScoresFromLunar(calendar);
+        // 2) 算推荐
+        const recommend = this.getRecommend(scoresCN);
+
+        // 一次性更新，避免异步时序导致组件拿不到数据
+        this.setData({ calendar, wuxingScoresCN: scoresCN, recommend });
       },
-      fail: (e) => console.error('接口失败：', e)
+      fail: () => {
+        // 网络失败时不清空 UI
+      }
     });
   },
 
-  /**
-   * === 把你的“五行打分算法”粘到这里 ===
-   * 入参：calendar（包含天干地支/五行年/月/日等字段）
-   * 出参：必须返回中文键对象：{ 木:number, 火:number, 土:number, 金:number, 水:number } 0~100
-   */
-  computeScoresFromLunar(calendar){
-    // TODO: 直接粘贴你的计算逻辑并 return
-    // 下面先给个兜底，确保页面可运行
-    const base = { 木: 60, 火: 70, 土: 50, 金: 40, 水: 65 };
-    return base;
+  // 五行打分（占位：你可以替换为正式算法）
+  computeScoresFromLunar(calendar) {
+    // 可以根据 tiangandizhiyear / month / day 做映射；先给稳定返回
+    return { 木: 62, 火: 71, 土: 53, 金: 41, 水: 66 };
   },
 
-  // 根据得分选推荐
-  updateRecommend(scoresCN) {
-    const arr = [
-      ['木', scoresCN.木 || 0], ['火', scoresCN.火 || 0], ['土', scoresCN.土 || 0],
-      ['金', scoresCN.金 || 0], ['水', scoresCN.水 || 0]
-    ].sort((a,b)=>b[1]-a[1]);
+  // 推荐映射：根据最高分挑手串
+  getRecommend(scoresCN) {
+    const arr = Object.entries(scoresCN).sort((a,b)=>b[1]-a[1]);
     const top = arr[0][0];
-
     const map = {
-      '火': { name: '赤炎手串', img: '/assets/p/p-fire.jpg',  desc: '热忱、热情昂扬', tags: ['火旺','旺运'] },
-      '木': { name: '青木手串', img: '/assets/p/p-wood.jpg',  desc: '生发、舒展平衡', tags: ['木旺','疏肝'] },
-      '土': { name: '厚土手串', img: '/assets/p/p-earth.jpg', desc: '稳重、厚德载物', tags: ['土旺','安定'] },
-      '金': { name: '清金手串', img: '/assets/p/p-metal.jpg', desc: '清肃、果断清明', tags: ['金旺','清心'] },
-      '水': { name: '沧海手串', img: '/assets/p/p-water.jpg', desc: '灵动、涵养智慧', tags: ['水旺','静心'] }
+      '火': { name: '赤炎手串', img: '/assets/p/p-fire.jpg',  desc: '热忱昂扬，聚能提气', tags: ['火旺','旺运'] },
+      '木': { name: '青木手串', img: '/assets/p/p-wood.jpg',  desc: '生发舒展，助力平衡', tags: ['木旺','舒展'] },
+      '土': { name: '厚土手串', img: '/assets/p/p-earth.jpg', desc: '厚德载物，安稳沉着', tags: ['土旺','安定'] },
+      '金': { name: '清金手串', img: '/assets/p/p-metal.jpg', desc: '清肃决断，清心凝神', tags: ['金旺','清心'] },
+      '水': { name: '沧海手串', img: '/assets/p/p-water.jpg', desc: '灵动涵养，宁神益智', tags: ['水旺','静心'] }
     };
-
-    const rec = map[top] || map['木'];
-    this.setData({ recommend: Object.assign({}, rec) });
-  },
-
-  // —— 导航示例 ——
-  goDetail(){ wx.navigateTo({ url: '/pages/detail/detail' }); },
-  goLibrary(){ wx.switchTab({ url: '/pages/library/library' }); }
+    return map[top] || map['木'];
+  }
 });

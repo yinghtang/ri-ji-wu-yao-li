@@ -1,5 +1,7 @@
 {
   "usingComponents": {
     "wuxing-radar": "/components/wuxing-radar/index"
-  }
+  },
+  "navigationBarTitleText": "日玑",
+  "navigationStyle": "default"
 }

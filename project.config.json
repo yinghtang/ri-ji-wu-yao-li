@@ -44,7 +44,7 @@
     "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
-  "libVersion": "3.10.1",
+  "libVersion": "3.9.3",
   "appid": "wxc715ef1c772d2252",
   "projectname": "TDesign",
   "simulatorType": "wechat",
