@@ -1,66 +1,21 @@
-// pages/profile/profile.js
 Page({
+  data:{ wishCount:0, todayTheme:'—' },
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-
+  onShow(){
+    const list = wx.getStorageSync('wishlist') || [];
+    this.setData({ wishCount: list.length });
+    // 主题占位：后续可从首页共享或通过全局状态注入
+    this.setData({ todayTheme: '宜木 · 舒展平衡' });
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
+  goWish(){ wx.navigateTo({ url:'/pages/profile/profile-wish' }); }, // 若你保留了旧心愿单页，改成对应路径
+  goLib(){ wx.switchTab({ url:'/pages/library/library' }); },
 
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+  // 下面先占位：后续接入真实功能
+  feedback(){ wx.openEmbeddedMiniProgram?.() || wx.showToast({title:'请在“关于”里联系作者',icon:'none'}); },
+  subscribe(){ wx.showToast({title:'订阅消息暂未接入',icon:'none'}); },
+  settings(){ wx.showToast({title:'设置中心暂未接入',icon:'none'}); },
+  help(){ wx.showToast({title:'帮助中心筹备中',icon:'none'}); },
+  about(){ wx.showToast({title:'日玑·五行与好物',icon:'none'}); },
+  todo(){ wx.showToast({title:'即将开放',icon:'none'}); }
+});

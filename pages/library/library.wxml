@@ -1,10 +1,20 @@
-<view class="page lib">
-  <view class="grid">
-    <block wx:for="{{list}}" wx:key="id">
-      <view class="card" bindtap="toDetail" data-id="{{item.id}}">
-        <image class="card-bg" src="../../assets/card-bg/card-bg.jpg" mode="aspectFill"/>
-        <image class="prod {{ownedMap[item.id]?'':'dim'}}" src="{{item.img}}" mode="aspectFit"/>
+<view class="page-lib">
+  <block wx:for="{{items}}" wx:key="name">
+    <view class="card">
+      <view class="img-wrap">
+        <image class="pic" src="{{item.img}}" mode="aspectFill"/>
+        <button class="wish-fab" data-name="{{item.name}}" bindtap="wish">＋</button>
       </view>
-    </block>
-  </view>
+      <view class="meta">
+        <view class="name">{{item.name}}</view>
+        <view class="desc">{{item.desc}}</view>
+        <view class="tags">
+          <block wx:for="{{item.tags}}" wx:key="*this">
+            <text class="tag">{{item}}</text>
+          </block>
+        </view>
+        <!-- 原“想要”按钮删除 -->
+      </view>
+    </view>
+  </block>
 </view>

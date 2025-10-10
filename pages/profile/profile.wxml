@@ -1,3 +1,49 @@
-<view class="container">
-  <text class="title">👤 我的（占位）</text>
+<view class="page-me">
+  <!-- 顶部信息 -->
+  <view class="me-hero">
+    <image class="avatar" src="/assets/logo.png"/>
+    <view class="me-info">
+      <view class="name">未登录的日玑用户</view>
+      <view class="sub">今日主题：{{todayTheme}}</view>
+    </view>
+  </view>
+
+  <!-- 快捷功能宫格 -->
+  <view class="grid">
+    <view class="g-item" bindtap="goWish">
+      <view class="g-icon">❤</view>
+      <view class="g-text">心愿单</view>
+      <view class="g-badge" wx:if="{{wishCount}}">{{wishCount}}</view>
+    </view>
+    <view class="g-item" bindtap="goLib">
+      <view class="g-icon">📚</view><view class="g-text">图鉴</view>
+    </view>
+    <view class="g-item" bindtap="todo">
+      <view class="g-icon">🏠</view><view class="g-text">收货地址</view>
+    </view>
+    <view class="g-item" bindtap="feedback">
+      <view class="g-icon">💬</view><view class="g-text">意见反馈</view>
+    </view>
+  </view>
+
+  <!-- 资产/权益 -->
+  <view class="card">
+    <view class="cell" bindtap="todo">
+      <view class="c-left">优惠券</view><view class="c-right">暂无</view>
+    </view>
+    <view class="cell" bindtap="todo">
+      <view class="c-left">积分</view><view class="c-right">0</view>
+    </view>
+    <view class="cell" bindtap="todo">
+      <view class="c-left">会员等级</view><view class="c-right">未开通</view>
+    </view>
+  </view>
+
+  <!-- 通用 -->
+  <view class="card">
+    <view class="cell" bindtap="subscribe">消息订阅</view>
+    <view class="cell" bindtap="settings">隐私与设置</view>
+    <view class="cell" bindtap="help">帮助中心</view>
+    <view class="cell" bindtap="about">关于「日玑」</view>
+  </view>
 </view>

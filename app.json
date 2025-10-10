@@ -8,11 +8,11 @@
   "window": {
     "navigationBarTitleText": "日玑",
     "navigationStyle": "default",
-    "navigationBarBackgroundColor": "#ffffff",   
-    "navigationBarTextStyle": "black",          
-    "backgroundColor": "#ffffff",                
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#ffffff",
     "backgroundTextStyle": "light"
-    },
+  },
   "tabBar": {
     "selectedColor": "#D64D41",
     "color": "#888888",
@@ -21,7 +21,7 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "日历",
+        "text": "今日",
         "iconPath": "assets/tabs/unselected/tab-calendar.png",
         "selectedIconPath": "assets/tabs/selected/tab-calendar-s.png"
       },
@@ -43,7 +43,6 @@
         "iconPath": "assets/tabs/unselected/tab-profile.png",
         "selectedIconPath": "assets/tabs/selected/tab-profile-s.png"
       }
-      
     ]
   }
 }

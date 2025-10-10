@@ -1,1 +1,19 @@
-/* pages/profile/profile.wxss */
+.page-me{ background:#f7f7f7; min-height:100vh; padding-bottom:24rpx; }
+.me-hero{ width:92%; margin:16rpx auto; display:flex; gap:14rpx; align-items:center;
+  background:#fff; border-radius:16rpx; padding:16rpx; box-shadow:0 6rpx 18rpx rgba(0,0,0,.06);}
+.avatar{ width:72rpx; height:72rpx; border-radius:50%; }
+.me-info .name{ font-size:30rpx; color:#333; font-weight:700; }
+.me-info .sub{ font-size:24rpx; color:#888; margin-top:4rpx; }
+
+.grid{ width:92%; margin:0 auto 12rpx; background:#fff; border-radius:16rpx; display:grid;
+  grid-template-columns:repeat(4,1fr); gap:8rpx; padding:12rpx 8rpx; box-shadow:0 6rpx 18rpx rgba(0,0,0,.06);}
+.g-item{ position:relative; text-align:center; padding:16rpx 0; }
+.g-icon{ font-size:34rpx; }
+.g-text{ font-size:24rpx; color:#555; margin-top:6rpx; }
+.g-badge{ position:absolute; right:18rpx; top:6rpx; background:#D64D41; color:#fff; font-size:20rpx; border-radius:20rpx;
+  padding:0 10rpx; height:28rpx; line-height:28rpx; }
+
+.card{ width:92%; margin:0 auto 12rpx; background:#fff; border-radius:16rpx; overflow:hidden; box-shadow:0 6rpx 18rpx rgba(0,0,0,.06); }
+.cell{ display:flex; justify-content:space-between; align-items:center; padding:18rpx 16rpx; font-size:26rpx; color:#333; border-top:1rpx solid #f2f2f2; }
+.cell:first-child{ border-top:none; }
+.c-left{ color:#333; } .c-right{ color:#999; }
