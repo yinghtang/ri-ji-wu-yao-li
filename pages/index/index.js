@@ -31,7 +31,7 @@ Page({
       url: "https://apis.tianapi.com/lunar/index",
       method: "GET",
       header: { "content-type": "application/json" },
-      data: { key: TIAN_KEY },
+      data: { key: "b988a9f83124836eed4cf203b143e40f" },
       success: (res) => {
         const raw = res?.data?.result || (Array.isArray(res?.data?.newslist) ? res.data.newslist[0] : null);
         if (res?.data?.code !== 200 || !raw) return;

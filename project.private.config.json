@@ -2,7 +2,7 @@
   "libVersion": "3.10.2",
   "projectname": "wuyao_v1.0.0",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": true,
